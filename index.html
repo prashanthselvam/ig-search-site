@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IG Search - Search any Instagram profile by caption</title>
+  <meta name="description" content="A free Chrome extension that lets you search through posts on any Instagram profile by caption text. Your data stays on your device.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --purple: #5b51d8;
+      --purple-light: #a78bfa;
+      --purple-glow: rgba(91, 81, 216, 0.15);
+      --bg: #0d0d1a;
+      --bg-card: #16162a;
+      --bg-card-hover: #1e1e36;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --border: #2a2a4a;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--purple-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Nav ────────────────────────────────────────────────── */
+
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--purple-light);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    /* ── Hero ───────────────────────────────────────────────── */
+
+    .hero {
+      text-align: center;
+      padding: 100px 0 80px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--purple-light);
+      background: var(--purple-glow);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--purple-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--purple);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(91, 81, 216, 0.3);
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(91, 81, 216, 0.4);
+      text-decoration: none;
+    }
+
+    .hero-cta svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .hero-note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── Hero Image ──────────────────────────────────────── */
+
+    .hero-image {
+      margin-top: 64px;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow:
+        0 24px 80px rgba(91, 81, 216, 0.18),
+        0 0 0 1px rgba(167, 139, 250, 0.1);
+    }
+
+    .hero-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* ── Features ───────────────────────────────────────────── */
+
+    .features {
+      padding: 80px 0;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 48px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── How It Works ──────────────────────────────────────── */
+
+    .how-it-works {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 48px;
+    }
+
+    .steps-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .step-card {
+      text-align: center;
+      position: relative;
+      padding-top: 18px;
+    }
+
+    .step-card .step-badge {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(91, 81, 216, 0.4);
+    }
+
+    .step-card img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .step-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .step-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Privacy Banner ────────────────────────────────────── */
+
+    .privacy-banner {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .privacy-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      text-align: center;
+    }
+
+    .privacy-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .privacy-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    .privacy-card a {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ── Footer ────────────────────────────────────────────── */
+
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* ── Support Section ────────────────────────────────────── */
+
+    .support {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .support-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      text-align: center;
+    }
+
+    .support-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .support-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .support-card p em {
+      color: var(--text);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .coffee-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+      background: #fbbf24;
+      padding: 12px 28px;
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(251, 191, 36, 0.25);
+    }
+
+    .coffee-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(251, 191, 36, 0.35);
+      text-decoration: none;
+    }
+
+    .coffee-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+
+    @media (max-width: 860px) {
+      .steps-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px 20px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 60px 0 50px; }
+      .features, .how-it-works { padding: 50px 0; }
+      .privacy-card, .support-card { padding: 28px 24px; }
+      .nav-links { gap: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .steps-gallery {
+        grid-template-columns: 1fr;
+        max-width: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <span class="nav-logo">IG Search</span>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Free Chrome Extension</div>
+      <h1>Search any Instagram profile by caption</h1>
+      <p>Find that recipe, quote, or recommendation buried in someone's feed. Load their posts once, then search by keyword instantly. Completely free. No account needed.</p>
+      <a href="#" class="hero-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.21 0 8 .01 8 .01S4 .13 4 4.56V19.44C4 23.87 8 24 8 24s.21.01 4 .01c3.79 0 4-.01 4-.01s4-.13 4-4.56V4.56C20 .13 16 0 16 0S15.79 0 12 0zm0 2c2.76 0 3.06.01 3.22.01.89.05 1.55.17 2.06.41a3.5 3.5 0 011.31 1.31c.24.51.36 1.17.41 2.06C19 6.94 19 7.24 19 10v4c0 2.76-.01 3.06-.01 3.22-.05.89-.17 1.55-.41 2.06a3.5 3.5 0 01-1.31 1.31c-.51.24-1.17.36-2.06.41C14.06 21 13.76 21 12 21s-3.06-.01-3.22-.01c-.89-.05-1.55-.17-2.06-.41a3.5 3.5 0 01-1.31-1.31c-.24-.51-.36-1.17-.41-2.06C5 16.06 5 15.76 5 14v-4c0-2.76.01-3.06.01-3.22.05-.89.17-1.55.41-2.06A3.5 3.5 0 016.73 3.4c.51-.24 1.17-.36 2.06-.41C8.94 3 9.24 3 12 3z"/></svg>
+        Add to Chrome
+      </a>
+      <div class="hero-image">
+        <img src="hero-screenshot.png" alt="IG Search extension showing the search icon on an Instagram profile page">
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2>Everything you need, nothing you don't</h2>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3>Search by caption</h3>
+          <p>Type any keyword and instantly find matching posts. No more endless scrolling through someone's feed.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </div>
+          <h3>Multiple profiles</h3>
+          <p>Save and search across as many profiles as you like. Jump between them from anywhere on Instagram.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>100% private</h3>
+          <p>All data stays on your device. Nothing is sent to any server. No accounts, no tracking, no analytics.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2>How it works</h2>
+      <div class="steps-gallery">
+
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <img src="step-load.png" alt="Click Load Posts to save all posts from a profile">
+          <h3>Load posts</h3>
+          <p>Click "Load Posts" and the page scrolls automatically, saving everything to your browser.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">2</div>
+          <img src="step-search.png" alt="Search results for chicken with highlighted matches">
+          <h3>Search by keyword</h3>
+          <p>Type any word to instantly find posts with matching captions.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">3</div>
+          <img src="step-profiles.png" alt="All profiles view showing multiple saved profiles">
+          <h3>Save multiple profiles</h3>
+          <p>Build a library of profiles you can search anytime without re-loading.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">4</div>
+          <img src="step-cross-search.png" alt="Search results across multiple profiles for spicy">
+          <h3>Search across all</h3>
+          <p>Search every saved profile at once to find exactly what you're looking for.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy-banner">
+    <div class="container">
+      <div class="privacy-card">
+        <h2>Your data stays yours</h2>
+        <p>IG Search stores everything locally on your device using your browser's built-in storage. No data is ever sent to any server. No accounts, no sign-ups, no tracking.</p>
+        <a href="privacy.html">Read our privacy policy &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="support" id="support">
+    <div class="container">
+      <div class="support-card">
+        <h2>Support us</h2>
+        <p>If you find IG Search useful, please share it with your friends. And if you <em>really</em> find it useful, consider buying us a coffee as a thank you! We hope to keep IG Search free forever.</p>
+        <a href="https://buymeacoffee.com/prashanthselvam" target="_blank" rel="noopener" class="coffee-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          Buy us a coffee
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p class="footer-links">IG Search &middot; <a href="privacy.html">Privacy Policy</a></p>
+      <p class="footer-copyright">&copy; 2026 Good Works Digital, LLC. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

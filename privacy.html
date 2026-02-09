@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy - IG Search</title>
+  <meta name="description" content="Privacy policy for the IG Search Chrome extension.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --purple: #5b51d8;
+      --purple-light: #a78bfa;
+      --bg: #0d0d1a;
+      --bg-card: #16162a;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --border: #2a2a4a;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--purple-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--purple-light);
+      letter-spacing: -0.3px;
+    }
+
+    .content {
+      padding: 60px 0 80px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .last-updated {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 36px 0 12px;
+    }
+
+    p, ul {
+      font-size: 15px;
+      color: #bbb;
+      margin-bottom: 16px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer a { color: var(--text-muted); }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="index.html" class="nav-logo">IG Search</a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <div class="container">
+      <h1>Privacy Policy</h1>
+      <p class="last-updated">Last updated: February 8, 2026</p>
+
+      <p>IG Search ("the Extension") is a Chrome browser extension that lets you search through posts on Instagram profiles by caption text. This privacy policy explains what data the Extension accesses, how it is stored, and your rights regarding that data.</p>
+
+      <h2>Data we collect</h2>
+      <p>The Extension collects the following data from Instagram pages you visit while using it:</p>
+      <ul>
+        <li><strong>Post metadata</strong> &mdash; captions, thumbnails, shortcodes, timestamps, and whether a post is pinned or a video</li>
+        <li><strong>Profile metadata</strong> &mdash; usernames and profile pictures of profiles you choose to load</li>
+      </ul>
+      <p>This data is collected <strong>only</strong> when you explicitly click the "Load Posts" button on a profile page. The Extension does not collect data in the background or on pages you do not interact with.</p>
+
+      <h2>How data is stored</h2>
+      <p>All data is stored <strong>locally on your device</strong> using your browser's built-in storage (<code>chrome.storage.local</code>). No data is ever transmitted to any external server, database, or third-party service.</p>
+
+      <h2>How data is used</h2>
+      <p>The collected data is used solely to power the Extension's search functionality &mdash; allowing you to search through post captions, view thumbnails, and navigate to posts on Instagram. The data is not used for any other purpose.</p>
+
+      <h2>Network interception</h2>
+      <p>The Extension intercepts network requests made by Instagram's website (specifically, GraphQL and API responses) in order to capture post data as it loads. This interception happens entirely within your browser and is necessary for the Extension's core functionality. No intercepted data is transmitted externally.</p>
+
+      <h2>Third-party sharing</h2>
+      <p>We do not collect, transmit, sell, or share any user data with any third party. There are no analytics, tracking scripts, or external services of any kind.</p>
+
+      <h2>Data retention and deletion</h2>
+      <p>Data is retained locally until you choose to delete it. You can delete data at any time using the Extension's built-in controls:</p>
+      <ul>
+        <li><strong>Clear a single profile</strong> &mdash; open the profile's detail view and click "Clear profile data"</li>
+        <li><strong>Clear all data</strong> &mdash; go to the all-profiles view and click "Clear all data"</li>
+        <li><strong>Uninstall the Extension</strong> &mdash; removing the Extension from Chrome automatically deletes all stored data</li>
+      </ul>
+
+      <h2>Permissions</h2>
+      <p>The Extension requests the following browser permissions:</p>
+      <ul>
+        <li><strong>storage</strong> &mdash; to save post data locally on your device</li>
+        <li><strong>activeTab</strong> &mdash; to interact with the Instagram tab you are currently viewing</li>
+        <li><strong>Host access to instagram.com</strong> &mdash; to inject the search panel and capture post data on Instagram pages</li>
+      </ul>
+
+      <h2>Children's privacy</h2>
+      <p>The Extension is not directed at children under 13. We do not knowingly collect data from children.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If this privacy policy changes, the updated version will be posted at this URL with a revised "Last updated" date.</p>
+
+      <h2>Contact</h2>
+      <p>If you have questions about this privacy policy, you can reach us by opening an issue on the Extension's support page.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p><a href="index.html">IG Search</a> &middot; Privacy Policy</p>
+      <p style="font-size: 12px; color: #555; margin-top: 12px;">&copy; 2026 Good Works Digital, LLC. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
