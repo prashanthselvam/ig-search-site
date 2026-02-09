@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IG Search - Search any Instagram profile by caption</title>
   <meta name="description" content="A free Chrome extension that lets you search through posts on any Instagram profile by caption text. Your data stays on your device.">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icon16.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -55,10 +57,19 @@
     }
 
     .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 18px;
       font-weight: 700;
       color: var(--purple-light);
       letter-spacing: -0.3px;
+    }
+
+    .nav-logo img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
     }
 
     .nav-links {
@@ -449,7 +460,7 @@
 
   <nav>
     <div class="container">
-      <span class="nav-logo">IG Search</span>
+      <span class="nav-logo"><img src="icon128.png" alt="IG Search icon">IG Search</span>
       <ul class="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#how-it-works">How it works</a></li>
